@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manifestation index{% endblock %}
+
+{% block container %}
+    <div class="container mt-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-start flex-wrap">
+                <a href="{{ path('app_index') }}" class="btn btn-arrow mr-3 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="{{ path('app_manifestation_new') }}" class="btn btn-primary">Ajouter une manifestation</a>
+            </div>
+        </div>
+
+        <h5 class="mb-3">Nombre de Manifestations ({{ manifestations.getTotalItemCount }})</h5>
+
+        <div class="form-outline mb-4">
+            <form action="{{ path('app_manifestation_index') }}" method="GET" class="d-flex gap-1 flex-row align-items-center justify-content-center form-inline mb-4">
+                <input type="search" name="search" value="{{ searchTerm }}" placeholder="Recherche Manifestation(s)" class="form-control mb-1 mr-sm-2">
+                <button type="submit" class="btn btn-light mb-1">Rechercher</button>
+            </form>
+
+            <div class="d-flex flex-column flex-md-row justify-content-start align-items-center text-center">
+                <input type="submit" value="Recherche ASC" class="form-control m-1.5">
+                <input type="submit" value="Recherche DESC" class="form-control m-1.5">
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Titre de la Manifestation</th>
+                    <th>Description de la Manifestation</th>
+                    <th>Date de Début</th>
+                    <th>Date de Fin</th>
+                    <th></th>
+                    <th></th>
+                    <th>Ajout image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for manifestation in manifestations %}
+                    <tr>
+                        <td>{{ manifestation.titreManifestation }}</td>
+                        <td>{{ manifestation.descriptionManifestation }}</td>
+                        <td>{{ manifestation.dateDebutManifestation ? manifestation.dateDebutManifestation|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ manifestation.dateFinManifestation ? manifestation.dateFinManifestation|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>
+                            <a class="btn btn-light" href="{{ path('app_manifestation_show', {'id': manifestation.id}) }}">Voir plus</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-light" href="{{ path('app_manifestation_edit', {'id': manifestation.id}) }}">Modifier</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-light shadow" href="{{ path('app_manifestation_newPhoto', {'id': manifestation.id}) }}">
+                                Ajouter Image Manifestation
+                            </a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7">no records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(manifestations) }}
+        </div>
+    </div>
+{% endblock %}

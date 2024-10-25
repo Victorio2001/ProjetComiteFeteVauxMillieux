@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Association index{% endblock %}
+
+{% block container %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-start flex-wrap mb-3 mr-2">
+        <a href="{{ path('app_index') }}" class="btn btn-arrow mr-3 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+        </a>
+    </div>
+    <h5 class="mb-3">Nombre d'associations ({{ pagination.getTotalItemCount }}) <a href="{{ path('app_association_new') }}">Ajouter nouvelle association</a></h5>
+
+    <div class="form-outline mb-4">
+        <form method="get" action="{{ path('app_association_index') }}" class="d-flex flex-column flex-md-row justify-content-start align-items-center text-center">
+            <input type="search" name="searchAssociation" value="{{ searchTerm }}" placeholder="Recherche association(s)" class="form-control mb-1 w-100">
+            <input type="submit" value="Recherche" class="btn btn-primary ml-2">
+        </form>
+    </div>
+
+    <div class="row">
+        {% for association in pagination %}
+        <div class="col-sm-6 col-md-3 mb-4">
+            <div class="card h-100">
+                {% if association.photos|length > 0 %}
+                    <div class="position-relative">
+                        <img src="{{ asset('Media/Img_photo/' ~ association.photos[0].titreImage) }}" style="height: 350px;" class="card-img-top" alt="Association Image"/>
+                        <a href="{{ path('app_association_editPhoto', {'id': association.photos[0].id}) }}" class="position-absolute top-0 end-0 p-2" style="color: white;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.207 3.94l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456L9.207 8.94 8 9.94V11h1.059l.999-1.207 4.543-4.543-1.707-1.707z"/>
+                                <path fill-rule="evenodd" d="M1 13.5V1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v3.5a.5.5 0 0 1-1 0V1a.5.5 0 0 0-.5-.5H2A.5.5 0 0 0 1.5 1v12a.5.5 0 0 0 .5.5H6.5a.5.5 0 0 1 0 1H2a1 1 0 0 1-1-1z"/>
+                            </svg>
+                        </a>
+                    </div>
+                {% else %}
+                    <a href="{{ path('app_association_newPhoto', {'id': association.id}) }}" class="btn btn-primary mt-2">Ajouter une image</a>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ association.nomAssociation }}</h5>
+                    <p class="card-text">{{ association.descriptionAssociation }}</p>
+                    <div class="mt-auto">
+                        <a href="{{ path('app_association_show', {'id': association.id}) }}" class="btn btn-light w-100 mb-1">Voir plus</a>
+                        <a href="{{ path('app_association_edit', {'id': association.id})}}" class="btn btn-light w-100 mb-1">Modifier</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Créée le: {{ association.createdAt ? association.createdAt|date('Y-m-d H:i:s') : '' }}</small>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        <div class="navigation d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

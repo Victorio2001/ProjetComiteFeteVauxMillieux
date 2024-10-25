@@ -1,0 +1,31 @@
+{{ form_start(form) }}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center">{{ title|default('Formulaire Association') }}</h2>
+                    <div class="form-group">
+                        {{ form_label(form.nomAssociation) }}
+                        {{ form_widget(form.nomAssociation, {'attr': {'class': 'form-control', 'placeholder': 'Nom de l\'association', 'maxlength': 250}}) }}
+                        {{ form_errors(form.nomAssociation) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.descriptionAssociation) }}
+                        {{ form_widget(form.descriptionAssociation, {'attr': {'class': 'form-control', 'placeholder': 'Description de l\'association', 'maxlength': 1000}}) }}
+                        {{ form_errors(form.descriptionAssociation) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.createdAt) }}
+                        {{ form_widget(form.createdAt, {'attr': {'class': 'form-control', 'placeholder': 'Date de création'}}) }}
+                        {{ form_errors(form.createdAt) }}
+                    </div>
+                    <div class="form-group text-center">
+                        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}

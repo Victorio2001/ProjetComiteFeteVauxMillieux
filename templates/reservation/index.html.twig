@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+
+{% block container %}
+    <div class="container mt-5">
+
+        <div class="d-flex justify-content-start flex-wrap mb-3 mr-2 ">
+            <a href="{{ path('app_index') }}" class="btn btn-arrow mr-3 shadow-sm ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <h5 class="mb-3">Nombre de Réservation en stock ({{ reservations.getTotalItemCount }}) </h5>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+
+        <div class="d-flex flex-row">
+            <div class="col-lg-8">
+                <div style="height: 300px;">
+                    {{ render_chart(chart) }}
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div  class="my-3" style="height: 300px;">
+                    {{ render_chart(chart2) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-outline mb-4">
+            <form action="{{ path('app_reservation_index') }}" method="GET" class="d-flex gap-1 flex-row align-items-center justify-content-center form-inline mb-4">
+                <input type="search" name="search" value="{{ searchTerm }}" placeholder="Recherche Réservation(s)" class="form-control mb-1 mr-sm-2">
+                <button type="submit" class="btn btn-light mb-1">Rechercher</button>
+            </form>
+        </div>
+
+
+        <h1></h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Date Réservation</th>
+                <th scope="col">Etat Réservation</th>
+                <th scope="col">Type Structure</th>
+                <th scope="col">Réservant [Nom-Prenom]</th>
+                <th scope="col">Commentaire Réservation</th>
+                <th scope="col">Date Retour</th>
+                <th scope="col">Date Emprunt</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% set etat_classes = {
+                'En-cours': 'text-primary',
+                'Archivée': 'text-secondary',
+                'Annulée': 'text-danger',
+                'En attente': 'text-warning',
+                'Terminée': 'text-success'
+            } %}
+
+
+            {% for reservation in reservations %}
+                <tr>
+                    <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d') : '' }}</td>
+                    <td>
+                        <span class="{{ etat_classes[reservation.etat] }}">
+                            {{ reservation.etat }}
+                        </span>
+                    </td>
+                    <td>{{ reservation.nomAsso }}</td>
+                    <td>{{ reservation.nomUserReservation }} {{ reservation.prenomUserReservation }}</td>
+                    <td>{{ reservation.commentaireReservation }}</td>
+                    <td>{{ reservation.dateRetour ? reservation.dateRetour|date('Y-m-d') : '' }}</td>
+                    <td>{{ reservation.dateEmprunt ? reservation.dateEmprunt|date('Y-m-d ') : '' }}</td>
+                    <td>
+                        <a class="btn btn-light" href="{{ path('app_reservation_show', {'id': reservation.id}) }}">Plus</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-light" href="{{ path('app_reservation_edit', {'id': reservation.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="9">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(reservations) }}
+        </div>
+    </div>
+
+
+
+{% endblock %}

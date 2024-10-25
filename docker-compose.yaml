@@ -1,0 +1,46 @@
+services:
+  app:
+    image: 3olen-framework-waavebackofficesymfony
+    container_name: waavebackofficesymfony-app
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/usr/app
+    networks:
+      - waavebackofficesymfony-network
+
+  httpd:
+    image: httpd
+    container_name: my-apacheWaave-app
+    ports:
+      - 8005:80
+    volumes:
+      - ./public/index.php:/usr/local/apache2/htdocs/index.php
+    restart: always
+    networks:
+      - waavebackofficesymfony-network
+
+  database:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pwd
+    ports:
+      - "5436:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+    networks:
+      - waavebackofficesymfony-network
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1026:1026"
+    networks:
+      - waavebackofficesymfony-network
+volumes:
+  db_data:
+
+networks:
+  waavebackofficesymfony-network:

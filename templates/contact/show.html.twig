@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block container%}
+<div class="container mt-5">
+    <div class="d-flex justify-content-start flex-wrap mb-3 mr-2 ">
+        <a href="{{ path('app_contact_index') }}" class="btn btn-arrow mr-3 shadow-sm ">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+        </a>
+    </div>
+    <h1  class="m-4 custom-title">Contact</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Email</th>
+                <td>{{ contact.email }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ contact.objet }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ contact.commentaire }}</td>
+            </tr>
+            <tr>
+                <th>Envoyé le :</th>
+                <td>{{ contact.createAt ? contact.createAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <a class="btn btn-light" href="{{ path('app_contact_index') }}">Retourner à la liste</a>
+
+    <a  class="btn btn-secondary m-2 " href="{{ path('app_reponse', {'id': contact.id}) }}">Répondre</a>
+
+    {{ include('contact/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

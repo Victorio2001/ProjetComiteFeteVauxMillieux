@@ -1,0 +1,9 @@
+# api/config/routes.yaml
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+
+auth:
+    path: /auth
+    controller: App\Controller\AuthController::login
+    methods: ['POST']

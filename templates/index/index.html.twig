@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block container %}
+    <div style="position: relative; width: 100%; margin-bottom: 20px;">
+        <img style="width: 100%; height: 450px; display: block; -webkit-user-select: none; margin: auto; cursor: zoom-in; background-color: hsl(0, 0%, 90%); transition: background-color 300ms;" src="{{ asset('Logo/background2.jpg') }}" width="1157" height="377">
+        <div
+        style="
+        position: absolute;
+        top: 50%;
+        left: 70%;
+        height: auto;
+        font-family: 'Roboto',serif;
+        width: auto;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #000000;
+        font-size: 17px;
+        font-weight: bold;
+        background-color: #FFFFFF;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        ">
+        Bienvenue sur le BackOffice du Comité des fêtes de Vaulx Millieu. Vous trouverez ici tous les outils dont vous avez besoin en tant qu'administrateur.
+        Vous retrouverez la gestion des Réservations, Fêtes, Manifestations et bien plus encore.
+        </div>
+    </div>
+
+    <div class="container mt-5">
+
+        <hr class="hr mx-2 " />
+
+        {% for successMessage in app.flashes('success') %}
+        <div class="mx-2">
+                <div class="d-flex justify-content-center">
+                    <div class="alert alert-success w-75 text-center" role="alert">
+                        {{ successMessage|raw }} "{{ app.user.nom }}"
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% for errorMessage in app.flashes('error') %}
+                <div class="d-flex justify-content-center">
+                    <div class="alert alert-danger w-75 text-center" role="alert">
+                        {{ errorMessage|raw }}
+                    </div>
+                </div>
+        </div>
+        {% endfor %}
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 m-3">
+            <div class="col">
+                <div class="card h-100 shadow-sm d-flex flex-column position-relative">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #000000;  font-family: 'Roboto',serif;">Matériel(s)</h5>
+                        <p class="card-text">Consultez et gérez vôtre matériel(s) (Ajout, Modification, Suppression).</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mt-auto">
+                        <a href="{{ path('app_materiel_index') }}"  class="btn btn-light shadow w-100 " >Accès matériels</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm d-flex flex-column position-relative">
+                       <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-secondary">
+                            {{ countSuperResEnAttente }} en attente
+                        </span>
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #000000;  font-family: 'Roboto',serif;">Réservation(s)</h5>
+                        <p class="card-text">Consultez et gérez les réservation(s) (Ajout, Modification, Suppression).</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mt-auto">
+                        <a href="{{ path('app_reservation_index') }}"  class="btn btn-light shadow w-100 ">Accès Réservations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm d-flex flex-column position-relative">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #000000;  font-family: 'Roboto',serif;">Association(s)</h5>
+                        <p class="card-text">Consultez et gérez les association(s) (Ajout, Modification, Suppression).</p>
+                        
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mt-auto">
+                        <a href="{{path('app_association_index')}}"  class="btn btn-light shadow w-100 ">Accès associations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm d-flex flex-column position-relative">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #000000;  font-family: 'Roboto',serif;">Manifestation(s)</h5>
+                        <p class="card-text">Consultez et gérez les manifestation(s) (Ajout, Modification, Suppression).</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mt-auto">
+                        <a href="{{ path('app_manifestation_index') }}"   class="btn btn-light shadow w-100 ">Accès manifestations</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm d-flex flex-column position-relative">
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #000000;  font-family: 'Roboto',serif;">Nos Utilisateurs</h5>
+                        <p class="card-text">Consultez et gérez les utilisateurs(s) / Groupes d'utilisateurs (Ajout, Modification, Suppression).</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mt-auto">
+                        <a href="{{ path('app_user_index') }}"  class="btn btn-light shadow w-100 ">Accès utilisateurs</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100 shadow-sm d-flex flex-column position-relative">
+                       <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-secondary">
+                            {{ countNonTraite }} en attentes
+                        </span>
+                    <div class="card-body">
+                        <h5 class="card-title" style="color: #000000;  font-family: 'Roboto',serif;">Demande de contact(s)</h5>
+                        <p class="card-text">Consultez et gérez les contact(s) (Ajout, Modification, Suppression).</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mt-auto">
+                        <a href="{{ path('app_contact_index') }}"  class="btn btn-light shadow w-100 ">Accès contacts</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+{% endblock %}

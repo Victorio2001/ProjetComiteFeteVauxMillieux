@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block container %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-start flex-wrap mb-3 mr-2 ">
+            <a href="{{ path('app_index') }}" class="btn btn-arrow mr-3 shadow-sm ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+        </div>
+
+        <h1>Création nouvelle Réservation</h1>
+
+        {{ form_start(form) }}
+        {{ csrf_token('reservation_form') }}
+        <label>Date Réservation: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.dateReservation) }}
+        </div>
+
+        <label>Commentaire Réservation: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.commentaireReservation) }}
+        </div>
+
+        <label>Date Retour: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.dateRetour) }}
+        </div>
+
+        <label>Date Emprunt: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.dateEmprunt) }}
+        </div>
+
+        <label>Date Création: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.created_at) }}
+        </div>
+
+        <label>Date Mis à jour: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.updated_at) }}
+        </div>
+
+        <label>Utilisateur: </label>
+        <div class="form-group mb-1">
+            {{ form_widget(form.Utilisateur) }}
+        </div>
+
+        <label >Archivage réservation: </label>
+        <div class="form-group mb-2">
+            {{ form_widget(form.archiverReservation) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.MaterielReservation) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.Envoyer) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var collectionHolder = $('div.select');  // Modifier si nécessaire
+            var addNewItemButton = $('<button type="button">Add new item</button>');
+            var newItemButtonDiv = $('<div></div>').append(addNewItemButton);
+
+            collectionHolder.append(newItemButtonDiv);
+
+            collectionHolder.data('index', collectionHolder.find(':input').length);
+
+            addNewItemButton.on('click', function(e) {
+                addNewForm(collectionHolder, newItemButtonDiv);
+            });
+
+            function addNewForm(collectionHolder, newItemButtonDiv) {
+                var prototype = collectionHolder.data('prototype');
+                var index = collectionHolder.data('index');
+
+                var newForm = prototype.replace(/__name__/g, index);
+
+                collectionHolder.data('index', index + 1);
+
+                var newFormDiv = $('<div></div>').append(newForm);
+                newItemButtonDiv.before(newFormDiv);
+            }
+        });
+    </script>
+{% endblock %}

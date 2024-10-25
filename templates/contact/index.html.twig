@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact {% endblock %}
+
+{% block container %}
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-start flex-wrap mb-3 mr-2 ">
+            <a href="{{ path('app_index') }}" class="btn btn-arrow mr-3 shadow-sm ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"  class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+        </div>
+
+            <h1 class="text-center display-3">Contact</h1>
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        <h5 class="mb-3">Nombre de mails non traités ({{ countNonTraite }}) </h5>
+
+        <form action="{{ path('app_contact_index') }}" method="GET" class="d-flex flex-row align-items-center form-inline mb-4">
+            <input type="search" name="search" value="{{ searchTerm }}" placeholder="Recherche contact(s)" class="form-control mb-1 mr-sm-2">
+            <button type="submit" class="btn btn-light m-2 shadow  m-3">Rechercher</button>
+        </form>
+
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th >Email</th>
+                <th>Objet</th>
+                <th>Commentaire</th>
+                <th class="m-5">Date envoie</th>
+
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for contact in contacts %}
+                <tr>
+                    <td>{{ contact.email }}</td>
+                    <td>{{ contact.objet }}</td>
+                    <td>{{ contact.commentaire }}</td>
+                    <td class="m-5">{{ contact.createAt ? contact.createAt|date('Y-m-d H:i:s') : '' }}</td>
+
+                    <td>
+                        <a class="btn {{ contact.isEtatcontact ? 'btn-success' : 'btn-danger' }}" href="{{ path('app_contact_toggle', {'id': contact.id}) }}">
+                            {{ contact.isEtatcontact ? 'Traité' : 'Non traité' }}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-light m-2 shadow" href="{{ path('app_contact_show', {'id': contact.id}) }}">Détail</a>
+                        <a class="btn btn-secondary m-2 " href="{{ path('app_reponse', {'id': contact.id}) }}">Répondre</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">Aucun message</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(contacts) }}
+        </div>
+    </div>
+
+{% endblock %}

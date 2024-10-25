@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Association{% endblock %}
+
+{% block container %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-start flex-wrap mb-3 mr-2">
+        <a href="{{ path('app_association_index') }}" class="btn btn-arrow mr-3 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+        </a>
+    </div>
+    <div class="row">
+        <h1>Association</h1>
+        <div class="col-8">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Nom de l'association</th>
+                        <td>{{ association.nomAssociation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description de l'association</th>
+                        <td>{{ association.descriptionAssociation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de création</th>
+                        <td>{{ association.createdAt ? association.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de mise à jour</th>
+                        <td>{{ association.updatedAt ? association.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <a class="btn btn-light" href="{{ path('app_association_edit', {'id': association.id}) }}">Modifier l'association</a>
+                {{ include('association/_delete_form.html.twig') }}
+            </div>
+        </div>
+        <div class="col-4 mt-3">
+            {% if association.photos|length > 0 %}
+              
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for photo in association.photos %}
+                  <div class="carousel-item active">
+                    <img src="{{ asset('Media/Img_photo/' ~ photo.titreImage) }}" style="height: 300px; width: 300px" class="d-block w-100" alt="Association Image"/>
+                  </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+              {% endif %}
+        </div>
+        
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h3 class="card-title">Manifestations Associées</h3>
+            <ul>
+                {% for manifestation in manifestations %}
+                    <li>{{ manifestation.titreManifestation }}</li>
+                {% else %}
+                    <li>Aucune manifestation associée.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

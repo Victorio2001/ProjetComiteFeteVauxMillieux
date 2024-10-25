@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block container %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-start flex-wrap mb-3 mr-2">
+            <a href="{{ path('app_reservation_index') }}" class="btn btn-arrow mr-3 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+        </div>
+
+        <h1>Modification Réservation</h1>
+
+        {{ form_start(form) }}
+        {{ form_row(form._token) }}
+
+        <div class="d-flex row">
+            <div class="col-lg-8">
+                <label>Commentaire Réservation: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.commentaireReservation) }}
+                </div>
+                <label>Etat: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.etat) }}
+                </div>
+                <label>Type de structure: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.nomAsso) }}
+                </div>
+
+                <label>Mail réservation: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.mailReservation) }}
+                </div>
+
+                <label>Prenom réservant: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.prenomUserReservation) }}
+                </div>
+
+                <label>Nom réservant: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.nomUserReservation) }}
+                </div>
+                <label>Numéro: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.numeroReservant) }}
+                </div>
+
+                <label>Ceci aura pour effet le re-stock du matériel</label>
+                <div class="form-group mb-2">
+                    {{ form_widget(form.archiverReservation) }}
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <label>Date Réservation: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.dateReservation) }}
+                </div>
+                <label>Date Retour: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.dateRetour) }}
+                </div>
+                <label>Date Emprunt: </label>
+                <div class="form-group mb-1">
+                    {{ form_widget(form.dateEmprunt) }}
+                </div>
+
+{#                <label>Date Création: </label>#}
+{#                <div class="form-group mb-1">#}
+{#                    {{ form_widget(form.created_at) }}#}
+{#                </div>#}
+{#                <label>Date Mis à jour: </label>#}
+{#                <div class="form-group mb-1">#}
+{#                    {{ form_widget(form.updated_at) }}#}
+{#                </div>#}
+            </div>
+        </div>
+        <div class="row" id="materiel-reservations">
+            {% for materielForm in form.MaterielReservation %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h5 class="mb-0">Matériel</h5>
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(materielForm) }}
+                    </div>
+                </div>
+            </div>
+            {% if loop.index is divisible by(3) %}
+        </div>
+        <div class="row">
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="d-flex flex-row">
+            <div class=" p-2">
+                {{ form_widget(form.Envoyer) }}
+            </div>
+            <div class="p-2">
+                {{ include('reservation/_delete_form.html.twig') }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

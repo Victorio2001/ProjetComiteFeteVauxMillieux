@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Manifestation{% endblock %}
+
+{% block container %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-start flex-wrap mb-3 mr-2">
+        <a href="{{ path('app_manifestation_index') }}" class="btn btn-arrow mr-3 shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+            </svg>
+            Retour
+        </a>
+    </div>
+    <div class="row">
+        <h1>Manifestation</h1>
+        <div class="col-8">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>Titre de la Manifestation</th>
+                        <td>{{ manifestation.titreManifestation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description de la Manifestation</th>
+                        <td>{{ manifestation.descriptionManifestation }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de Début</th>
+                        <td>{{ manifestation.dateDebutManifestation ? manifestation.dateDebutManifestation|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Date de Fin</th>
+                        <td>{{ manifestation.dateFinManifestation ? manifestation.dateFinManifestation|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <a class="btn btn-light" href="{{ path('app_manifestation_edit', {'id': manifestation.id}) }}">Modifier la manifestation</a>
+                {{ include('manifestation/_delete_form.html.twig') }}
+            </div>
+        </div>
+        
+        <div class="col-4 mt-3">
+            {% if manifestation.photos|length > 0 %}
+              
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    {% for photo in manifestation.photos %}
+                  <div class="carousel-item active">
+                    <img src="{{ asset('Media/img_photo/' ~ photo.titreImage) }}" style="height: 300px; width: 300px" class="d-block w-100" alt="Manifestation Image"/>
+                  </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+              {% endif %}
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h3 class="card-title">Associations Liées</h3>
+            <ul>
+                {% for association in associations %}
+                    <li>{{ association.nomAssociation }}</li>
+                {% else %}
+                    <li>Aucune association liée.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

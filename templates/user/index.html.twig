@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block container %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-start flex-wrap mb-3 mr-2">
+            <a href="{{ path('app_index') }}" class="btn btn-arrow mr-3 shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </a>
+        </div>
+
+        <h1 class="text-center display-3">Liste des utilisateurs</h1>
+
+        <form action="{{ path('app_user_index') }}" method="GET" class="d-flex flex-row align-items-center form-inline mb-4">
+            <input type="search" name="search" value="" placeholder="Recherche user(s)" class="form-control mb-1 mr-sm-2">
+            <button type="submit" class="btn btn-light m-2 shadow m-3">Rechercher</button>
+        </form>
+        <div>
+            <a class="btn btn-light m-2 mb-4 shadow" href="{{ path('app_user_new') }}">Ajouter un utilisateurs</a>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+
+                <th>Email</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Role</th>
+                <th>IsVerified</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.nom }}</td>
+                    <td>{{ user.prenom }}</td>
+                    {% for role in user.roles %}
+
+                    <td>{{ role }}</td>
+
+                    {% endfor %}
+
+                    <td>{{ user.isVerified ? 'Oui' : 'Non' }}</td>
+
+                    <td>
+                        <a class="btn btn-light m-2 shadow" href="{{ path('app_user_show', {'id': user.id}) }}">Détails</a>
+                        <a class="btn btn-secondary m-2" href="{{ path('app_user_edit', {'id': user.id}) }}">Modification</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}
